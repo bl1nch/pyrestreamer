@@ -1,0 +1,7 @@
+#stream-item { background: #2b2b2b; width: 100%; text-align: left; border-radius: 5px; margin: 10px; }
+#stream-item:hover {background: #545454; }
+#stream-item a { color: white; }
+#stream-item p { color: white; }
+#stream-header { width: 100%; text-align: left; padding-top: 50px; margin: 10px; color: white; }
+#left-side-btn { margin-left: auto; }
+.copy-btn { background-color: Transparent; background-repeat:no-repeat; border: none; cursor:pointer; overflow: hidden; }

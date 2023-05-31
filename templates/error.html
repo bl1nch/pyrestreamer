@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/error.css">
+{% endblock %}
+
+{% block sections %}
+<section class="error">
+    <div class="container">
+        <div class="column-flexbox-center" id="error-box">
+            <img src="/static/images/ship.png" alt="live">
+            <h1>{{code}}</h1>
+            <h6>{{description}}</h6>
+        </div>
+    </div>
+</section>
+{% endblock %}

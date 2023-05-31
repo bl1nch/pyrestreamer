@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/log.css">
+<script src="/static/javascript/logging.js" defer></script>
+{% endblock %}
+
+{% block sections %}
+<section class="log">
+    <div class="container">
+        <div class="column-flexbox-center" id="log-box">
+            <div class="scrollable-widget" id="log">
+                {% for element in server_logs %}
+                    <p>{{ element }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

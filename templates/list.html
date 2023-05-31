@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/list.css">
+<script src="/static/javascript/listing.js"></script>
+{% endblock %}
+
+{% block sections %}
+<section class="list">
+    <div class="container">
+        <div class="column-flexbox-center">
+            <div class="line-flexbox" id="stream-header">
+                <img src="/static/images/broadcast.png" alt="broadcast">
+                <h5>Stream list</h5>
+                <button class="md-btn" id="left-side-btn" onclick="stream_api_all_func('{{url_for('api.stop_all')}}')">stop all</button>
+                <button class="md-btn" onclick="stream_api_all_func('{{url_for('api.start_all')}}')">start all</button>
+                <button class="md-btn" onclick="stream_api_all_func('{{url_for('api.restart_all')}}')">restart all</button>
+                <button class="md-btn" onclick="redirect_func('{{url_for('vue.new_stream')}}')">add new</button>
+            </div>
+            {% for stream in streams %}
+                <div id="stream-item">
+                    <a href= {{url_for('vue.stream_item',name=stream.get('name'))}} >
+                        <h6>{{ stream.get('name') }}</h6>
+                    </a>
+                    <div class="line-flexbox">
+                        <p><strong>Input address:</strong></p>
+                        <p id="copy_input_{{ stream.get('name').replace(' ', '_') }}">{{ stream.get('resource') }}</p>
+                        <button form="" onclick="copy_func('copy_input_{{ stream.get('name').replace(' ', '_') }}')" class="copy-btn"><img src="/static/images/copy.png" alt="cp"></button>
+                    </div>
+                    <div class="line-flexbox">
+                        <p><strong>Output address:</strong></p>
+                        <p id="copy_output_{{ stream.get('name').replace(' ', '_') }}">{{ stream.get('address') }}</p>
+                        <button form="" onclick="copy_func('copy_output_{{ stream.get('name').replace(' ', '_') }}')" class="copy-btn"><img src="/static/images/copy.png" alt="cp"></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

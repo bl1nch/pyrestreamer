@@ -1,0 +1,56 @@
+/* base structure */
+html { min-width: 1000px; }
+
+body { font-family: 'Lato', sans-serif; letter-spacing: 2px; font-size: 16px; color: gray; background: #141414; padding: 0; margin: 0; display: flex; flex-direction: column; min-height: 105vh; }
+
+header { background: #3367d6; }
+
+footer { margin-top: auto; background: #fff; }
+
+
+/* image structure */
+img { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; pointer-events: none; }
+
+
+/* text structure */
+p { padding-top: 5px; padding-bottom: 5px; padding-right: 10px; padding-left: 10px; margin: 0; background-color:transparent; }
+
+a { text-decoration: none; color: gray;  -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; }
+
+h1, h2, h3, h4, h5, h6 { padding: 10px; margin: 0; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; }
+h1 { font-size: 70px; }
+h2 { font-size: 60px; }
+h3 { font-size: 50px; }
+h4 { font-size: 30px; }
+h5 { font-size: 25px; }
+h6 { font-size: 20px; }
+
+ul, li { display: block; }
+
+
+/* construct structure */
+.md-btn { display: inline-block; position: relative; cursor: pointer; height: 35px; line-height: 35px; padding: 0 1.5rem;
+    color: #fff; font-size: 16px; text-align: center; text-decoration: none; vertical-align: middle; white-space: nowrap;
+    outline: none; border: none; user-select: none; border-radius: 5px; background: black; text-transform: uppercase;
+    margin: 10px; font-family: 'Lato', sans-serif; letter-spacing: 2px;
+    &:hover { text-decoration: none; background: #1d1d1d; } }
+.colored-box { background: #000; border-radius: 5px; }
+.container { width: 90%; margin: 0 auto; }
+.scrollable-widget { overflow-y: scroll; height: 90%; width: 95%; background: #000; text-align: left; padding: 10px; border-radius: 5px; }
+.scrollable-widget p::selection{ background: #fdf5e6; }
+.scrollable-widget::-webkit-scrollbar { height: 0; width: 0; background: #fff; }
+.line-flexbox { display: flex; align-items: center; text-align: center; height: 100%; width: 100%; }
+.line-flexbox-center { display: flex; align-items: center; text-align: center; height: 100%; width: 100%; justify-content: center;}
+.column-flexbox { display: flex; align-items: center; text-align: center; height: 100%; width: 100%; flex-direction: column; }
+.column-flexbox-center { display: flex; align-items: center; text-align: center; height: 100%; width: 100%; flex-direction: column; justify-content: center; }
+
+
+/* header structure */
+.header-title { display: flex; align-items: center; text-align: center; padding: 13px; }
+.header-title:hover { background: #4285f4; }
+header a { color: white; }
+#monitoring_cpu { margin-left: auto; }
+#monitoring_cpu p { color: white; font-weight: bold; }
+#monitoring_gpu p { color: white; font-weight: bold; }
+#monitoring_ram p { color: white; font-weight: bold; }
+#monitoring_mem p { color: white; font-weight: bold; }

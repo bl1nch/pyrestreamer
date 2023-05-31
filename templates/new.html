@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/new.css">
+<script src="/static/javascript/new.js"></script>
+{% endblock %}
+
+{% block sections %}
+<section class="stream">
+    <div class="container">
+        <div class="column-flexbox-center">
+            <div class="line-flexbox" id="stream-header">
+                <h3>New stream</h3>
+            </div>
+            <div class="line-flexbox">
+                <div class="column-flexbox-center">
+                    <div class="line-flexbox">
+                        <div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_name">
+                              <label>name:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_resource">
+                              <label>resource:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_protocol">
+                              <label>protocol:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_ip">
+                              <label>ip:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_port">
+                              <label>port:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_type" oninput="hide_show_transcode()">
+                              <label>stream type:</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="1000" id="stream_file_caching">
+                              <label>file caching:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_miface">
+                              <label>miface:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="true" id="stream_loop">
+                              <label>loop:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="1" id="stream_audio_track">
+                              <label>audio track:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="ts" id="stream_mux">
+                              <label>mux:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_logo_file">
+                              <label>logo file:</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-flexbox">
+                        <div hidden="hidden" id="a_transcode">
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="96" id="stream_audio_rate">
+                              <label>audio rate:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="mpga" id="stream_audio_codec">
+                              <label>audio codec:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="2" id="stream_audio_channels">
+                              <label>audio channels:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="44100" id="stream_audio_samplerate">
+                              <label>audio samplerate:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_subtitles_codec">
+                              <label>subtitles codec:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" id="stream_subtitles_filter">
+                              <label>subtitles filter:</label>
+                            </div>
+                        </div>
+                        <div hidden="hidden" id="v_transcode">
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="5000" id="stream_video_rate">
+                              <label>video rate:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="mp2v" id="stream_video_codec">
+                              <label>video codec:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="0" id="stream_width">
+                              <label>width:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="0" id="stream_height">
+                              <label>height:</label>
+                            </div>
+                            <div class="material-textfield">
+                              <input placeholder=" " type="text" value="0" id="stream_scale">
+                              <label>scale:</label>
+                            </div>
+                            <div class="material-textfield">
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column-flexbox-center">
+                    <div class="line-flexbox"> <button class="md-btn" onclick="create_stream('{{url_for('api.add')}}')" id="create-btn">create</button> </div>
+                    <h6>Attention!</h6>
+                    <p>Once created, the stream cannot be changed, it can only be deleted. After creating a stream, it is in an unstarted state, you can start it from the list of streams</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

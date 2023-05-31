@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="icon" type="image/png" href="/static/images/logo.png" />
+    <link rel="stylesheet" href="/static/css/base.css">
+    <script src="/static/javascript/socketio.js"></script>
+    <script src="/static/javascript/monitoring.js"></script>
+    {% block links %} {% endblock %}
+</head>
+<body onload="server_monitoring()">
+    <header>
+        <div class="container">
+            <div class="line-flexbox">
+                <img src="/static/images/logo.png" alt="live">
+                <a href="{{url_for('vue.stream_list')}}"><div class="header-title"><h5>Control Dashboard</h5></div></a>
+                <div id="monitoring_cpu"> <div class="line-flexbox"> <p>CPU:</p> <p id="cpu">0%</p> </div> </div>
+                <div id="monitoring_ram"> <div class="line-flexbox"> <p>RAM:</p> <p id="ram">0%</p> </div> </div>
+                <div id="monitoring_gpu"> <div class="line-flexbox"> <p>GPU:</p> <p id="gpu">0%</p> </div> </div>
+                <div id="monitoring_mem"> <div class="line-flexbox"> <p>MEM:</p> <p id="mem">0%</p> </div> </div>
+            </div>
+        </div>
+    </header>
+    {% block sections %} {% endblock %}
+    <footer>
+        <div class="container">
+             <div class="line-flexbox">
+                 <a href="#"><p>API</p></a>
+                 <a href= {{url_for('vue.server_log')}} ><p>Server-log</p></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

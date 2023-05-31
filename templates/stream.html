@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/stream.css">
+<script src="/static/javascript/stream.js"></script>
+{% endblock %}
+
+{% block sections %}
+<section class="stream">
+    <div class="container">
+        <div class="column-flexbox-center">
+            <div class="line-flexbox" id="stream-header">
+                <h3>{{ stream.get_name() }}</h3>
+                <div class="colored-box">
+                    <h5>{{ stream.get_type() }}</h5>
+                </div>
+            </div>
+            <div class="line-flexbox">
+                <div id="stream-info">
+                    {% for key, value in stream.get_info().items() %}
+                        <div class="line-flexbox">
+                            <strong>{{ key }}:</strong>
+                            {% if value %}
+                                <p>{{ value }}</p>
+                            {% else %}
+                                <p>None</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="stream-func">
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.status')}}', '{{ stream.get_name() }}', 'stream_status')">status</button> </div>
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.ping')}}', '{{ stream.get_name() }}', 'stream_ping')">ping</button> </div>
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.stop')}}', '{{ stream.get_name() }}', 'stream_stop')">stop</button> </div>
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.start')}}', '{{ stream.get_name() }}', 'stream_start')">start</button> </div>
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.restart')}}', '{{ stream.get_name() }}', 'stream_restart')">restart</button> </div>
+                    <div class="line-flexbox"> <button class="md-btn" onclick="stream_api_func('{{url_for('api.remove')}}', '{{ stream.get_name() }}', 'stream_remove')">remove</button> </div>
+                </div>
+                <div id="stream-res">
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_status"></div> </div>
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_ping"></div> </div>
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_stop"></div> </div>
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_start"></div> </div>
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_restart"></div> </div>
+                    <div class="line-flexbox"> <div class="stream-api" id="stream_remove"></div> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
