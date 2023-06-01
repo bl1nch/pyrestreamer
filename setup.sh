@@ -7,6 +7,7 @@ activate(){
     deactivate
 }
 
+mkdir logs
 sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install -y vlc python3-virtualenv python3-pip tmux openssl
