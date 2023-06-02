@@ -4,12 +4,10 @@
 # Installation
 1. Run setup.sh
 ```
-chmod +X setup.sh
 . setup.sh
 ```
 2. Attach tmux session
 ```
-tmux ls
 tmux attach -t pyrestreamer
 ```
 3. Activate virtualenv
