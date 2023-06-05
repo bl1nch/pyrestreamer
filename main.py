@@ -14,4 +14,4 @@ if __name__ == '__main__':
         streams.add(Stream(**element))
 
     streams.start()
-    socketio.run(app, host='127.0.0.1', port=80, certfile='certificate.pem', keyfile='privatekey.pem')
+    socketio.run(app, host='127.0.0.1', port=5000, ssl_context=('certificate.pem', 'privatekey.pem'))
