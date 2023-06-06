@@ -1,6 +1,7 @@
 flask
 flask-socketio
-simple-websocket
+gevent
+gevent-websocket
 pysondb
 psutil
 GPUtil
