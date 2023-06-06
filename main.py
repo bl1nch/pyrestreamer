@@ -2,6 +2,7 @@ from core import app, socketio, db, streams
 from extensions.streaming import Stream
 from app.api import api_bp
 from app.vue import vue_bp
+import logging
 
 
 if __name__ == '__main__':
@@ -13,5 +14,6 @@ if __name__ == '__main__':
         element.pop("id")
         streams.add(Stream(**element))
 
+    logging.warning('App started')
     streams.start()
-    socketio.run(app, host='127.0.0.1', port=5000, ssl_context=('certificate.pem', 'privatekey.pem'))
+    socketio.run(app, host='127.0.0.1', port=5000, certfile='certificate.pem', keyfile='privatekey.pem')
