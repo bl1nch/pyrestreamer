@@ -4,7 +4,7 @@ from extensions.streaming import StreamPool
 from flask_apscheduler import APScheduler
 
 
-host, port = '0.0.0.0', 5000
+host, port = '0.0.0.0', 5050
 app, socketio = create_app()
 log = setup_logging(socketio=socketio)
 monitor = start_monitoring(socketio=socketio)
