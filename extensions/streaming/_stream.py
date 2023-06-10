@@ -6,7 +6,6 @@ import urllib.parse
 import logging
 import platform
 import subprocess
-import requests
 import time
 
 
@@ -65,6 +64,8 @@ class Stream:
         self.__audio_channels, self.__audio_sample_rate = audio_channels, audio_sample_rate
         self.__subtitles_codec, self.__subtitles_filter = subtitles_codec, subtitles_filter
         self.__mux, self.__logo_file = mux, logo_file
+        self.__restart_thread = None
+        self.__active = True
 
         vlc_instance_parameters = [
             '--quiet' if StreamPool.quiet() else None,
@@ -75,7 +76,7 @@ class Stream:
         self.__vlc_instance = Instance(' '.join(filter(None, vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
         self.__events = self.__player.event_manager()
-        self.__events.event_attach(EventType.MediaPlayerEndReached, self.restart_on_end)
+        self.__events.event_attach(EventType.MediaPlayerEndReached, self.__restart_on_end)
 
         if self.__logo_file != '':
             self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
@@ -121,6 +122,21 @@ class Stream:
 
         else:
             self.__sout = ''
+
+    @property
+    def active(self):
+        return self.__active
+
+    @active.setter
+    def active(self, value):
+        self.__active = value
+
+    @property
+    def restart_thread_alive(self):
+        if self.__restart_thread:
+            return self.__restart_thread.is_alive()
+        else:
+            return None
 
     def get_name(self):
         return self.__name
@@ -186,20 +202,16 @@ class Stream:
             return False
 
     def release(self):
+        self.__active = False
         self.__player.release()
 
-    @staticmethod
-    def __thread_restarter(name, address, timeout):
-        def request(parameter):
-            return requests.get(address + '/' + parameter, params={'name': name}).json()
-
+    def __thread_restarter(self):
         first_timeout_done = False
         while True:
-            status = request('status')
-            if status.get('found') and not status.get('online'):
-                request('restart')
+            if self.__active and not self.__player.is_playing():
+                self.restart()
                 if not first_timeout_done:
-                    time.sleep(timeout)
+                    time.sleep(10)
                     first_timeout_done = True
                 else:
                     time.sleep(600)
@@ -207,10 +219,10 @@ class Stream:
                 break
 
     @callbackmethod
-    def restart_on_end(self, *_):
+    def __restart_on_end(self, *_):
         if self.__loop:
-            thread = Thread(target=self.__thread_restarter, args=(self.__name, StreamPool.address(), 10), daemon=True)
-            thread.start()
+            self.__restart_thread = Thread(target=self.__thread_restarter, daemon=True)
+            self.__restart_thread.start()
 
     def restart(self):
         if self.__player.is_playing():
