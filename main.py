@@ -5,6 +5,9 @@ from app.vue import vue_bp
 
 
 if __name__ == '__main__':
+    from gevent import monkey
+    monkey.patch_all()
+    
     app.register_blueprint(api_bp)
     app.register_blueprint(vue_bp)
     data = db.getAll()
