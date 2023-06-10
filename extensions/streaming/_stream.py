@@ -1,10 +1,13 @@
 from extensions.streaming._stream_pool import StreamPool
-from vlc import Instance, VideoLogoOption
+from vlc import Instance, VideoLogoOption, EventType, callbackmethod
 from socket import gethostbyname
+from threading import Thread
 import urllib.parse
 import logging
 import platform
 import subprocess
+import requests
+import time
 
 
 class Stream:
@@ -64,14 +67,15 @@ class Stream:
         self.__mux, self.__logo_file = mux, logo_file
 
         vlc_instance_parameters = [
-            '--quiet' if StreamPool.quiet else None,
+            '--quiet' if StreamPool.quiet() else None,
             '--file-caching=' + str(self.__file_caching),
             '--audio-track=' + str(self.__audio_track),
-            '--miface=' + self.__m_iface if self.__m_iface != '' else None,
-            '--loop' if self.__loop else None
+            '--miface=' + self.__m_iface if self.__m_iface != '' else None
         ]
         self.__vlc_instance = Instance(' '.join(filter(None, vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
+        self.__events = self.__player.event_manager()
+        self.__events.event_attach(EventType.MediaPlayerEndReached, self.restart_on_end)
 
         if self.__logo_file != '':
             self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
@@ -183,6 +187,30 @@ class Stream:
 
     def release(self):
         self.__player.release()
+
+    @staticmethod
+    def __thread_restarter(name, address, timeout):
+        def request(parameter):
+            return requests.get(address + '/' + parameter, params={'name': name}).json()
+
+        first_timeout_done = False
+        while True:
+            status = request('status')
+            if status.get('found') and not status.get('online'):
+                request('restart')
+                if not first_timeout_done:
+                    time.sleep(timeout)
+                    first_timeout_done = True
+                else:
+                    time.sleep(600)
+            else:
+                break
+
+    @callbackmethod
+    def restart_on_end(self, *_):
+        if self.__loop:
+            thread = Thread(target=self.__thread_restarter, args=(self.__name, StreamPool.address(), 10), daemon=True)
+            thread.start()
 
     def restart(self):
         if self.__player.is_playing():
