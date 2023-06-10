@@ -1,4 +1,4 @@
-from core._core import app, socketio, log, monitor, db, streams, host, port, ssl
+from core._core import app, socketio, log, monitor, db, streams, host, port
 
 
-__all__ = ['host', 'port', 'ssl', 'app', 'socketio', 'log', 'monitor', 'db', 'streams']
+__all__ = ['host', 'port', 'app', 'socketio', 'log', 'monitor', 'db', 'streams']
