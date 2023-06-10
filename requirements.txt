@@ -6,3 +6,5 @@ pysondb
 psutil
 GPUtil
 python-vlc
+requests
+APScheduler
