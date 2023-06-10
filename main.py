@@ -1,4 +1,4 @@
-from core import app, socketio, db, streams
+from core import app, socketio, db, streams, host, port, ssl
 from extensions.streaming import Stream
 from app.api import api_bp
 from app.vue import vue_bp
@@ -16,4 +16,7 @@ if __name__ == '__main__':
 
     logging.warning('App started')
     streams.start()
-    socketio.run(app, host='127.0.0.1', port=5000, certfile='certificate.pem', keyfile='privatekey.pem')
+    if ssl:
+        socketio.run(app, host=host, port=port, certfile='certificate.pem', keyfile='privatekey.pem')
+    else:
+        socketio.run(app, host=host, port=port)
