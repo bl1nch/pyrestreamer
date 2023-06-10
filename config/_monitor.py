@@ -4,8 +4,7 @@ from threading import Thread
 
 
 def start_monitoring(socketio):
-    thread = Thread(target=monitoring, args=(socketio, ), daemon=True)
-    thread.start()
+    thread = socketio.start_background_task(monitoring, socketio)
     return thread
 
 
