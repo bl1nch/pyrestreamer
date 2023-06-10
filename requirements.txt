@@ -6,5 +6,4 @@ pysondb
 psutil
 GPUtil
 python-vlc
-requests
 Flask-APScheduler
