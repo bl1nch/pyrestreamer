@@ -7,4 +7,4 @@ psutil
 GPUtil
 python-vlc
 requests
-APScheduler
+Flask-APScheduler
