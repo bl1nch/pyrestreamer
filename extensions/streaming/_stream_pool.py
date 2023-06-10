@@ -3,14 +3,28 @@ from extensions.singleton import Singleton
 
 class StreamPool(metaclass=Singleton):
     __quiet = False
-    __data = {}
+    __address = ''
 
-    def __init__(self, quiet=False):
+    def __init__(self, address, scheduler, quiet=False):
+        self.__class__.__address = address
         self.__class__.__quiet = quiet
+        self.__data = {}
 
-    @property
-    def quiet(self):
-        return self.__quiet
+        @scheduler.task('cron', id='scheduler_1', day='*', hour=1)
+        def scheduled_restarter():
+            self.restart()
+
+        @scheduler.task('cron', id='scheduler_12', day='*', hour=12)
+        def scheduled_restarter():
+            self.restart()
+
+    @classmethod
+    def address(cls):
+        return cls.__address
+
+    @classmethod
+    def quiet(cls):
+        return cls.__quiet
 
     def get(self, stream_name):
         return self.__data.get(stream_name)
