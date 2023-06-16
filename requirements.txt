@@ -1,9 +1,9 @@
 flask
 flask-socketio
+apscheduler
 gevent
 gevent-websocket
 pysondb
 psutil
 GPUtil
 python-vlc
-Flask-APScheduler
