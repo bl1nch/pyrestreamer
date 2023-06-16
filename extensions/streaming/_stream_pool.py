@@ -12,23 +12,39 @@ class StreamPool(metaclass=Singleton):
         self.__sched_lock = Lock()
         self.__data = {}
 
-        @scheduler.scheduled_job('cron', id='scheduled_restarter_am', hour=1)
-        def scheduled_restarter_am():
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_am_l', hour=1)
+        def scheduled_restarter_am_l():
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
             self.restart()
             self.__sched_using = False
 
-        @scheduler.scheduled_job('cron', id='scheduled_restarter_pm', hour=13)
-        def scheduled_restarter_pm():
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_am_h', hour=7)
+        def scheduled_restarter_am_h():
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
             self.restart()
             self.__sched_using = False
 
-        @scheduler.scheduled_job('interval', id='check_and_restart', minutes=10)
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_pm_l', hour=13)
+        def scheduled_restarter_pm_l():
+            self.__sched_using = True
+            while self.__sched_lock.locked():
+                sleep(5)
+            self.restart()
+            self.__sched_using = False
+
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_pm_h', hour=19)
+        def scheduled_restarter_pm_h():
+            self.__sched_using = True
+            while self.__sched_lock.locked():
+                sleep(5)
+            self.restart()
+            self.__sched_using = False
+
+        @scheduler.scheduled_job('interval', id='check_and_restart', minutes=15)
         def check_and_restart():
             if not self.__sched_using:
                 self.restart_crashed()
