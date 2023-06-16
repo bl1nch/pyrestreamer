@@ -1,4 +1,5 @@
 from extensions.singleton import Singleton
+from gevent.threading import Lock
 
 
 class StreamPool(metaclass=Singleton):
@@ -7,6 +8,7 @@ class StreamPool(metaclass=Singleton):
     def __init__(self, scheduler, quiet=False):
         self.__class__.__quiet = quiet
         self.__data = {}
+        self.__lock = Lock()
 
         @scheduler.scheduled_job('cron', id='scheduled_restarter_am', hour=1)
         def scheduled_restarter_am():
@@ -62,7 +64,7 @@ class StreamPool(metaclass=Singleton):
 
     def restart_crashed(self):
         for _, stream in self.__data.items():
-            stream.start_test()
+            stream.start_test(self.__lock)
 
     def restart_if_down(self):
         for _, stream in self.__data.items():
