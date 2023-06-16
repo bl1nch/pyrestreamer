@@ -8,13 +8,17 @@ class StreamPool(metaclass=Singleton):
         self.__class__.__quiet = quiet
         self.__data = {}
 
-        @scheduler.task('cron', id='scheduler_am', day='*', hour=1)
-        def scheduled_restarter():
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_am', hour=1)
+        def scheduled_restarter_am():
             self.restart()
 
-        @scheduler.task('cron', id='scheduler_pm', day='*', hour=13)
-        def scheduled_restarter():
+        @scheduler.scheduled_job('cron', id='scheduled_restarter_pm', hour=13)
+        def scheduled_restarter_pm():
             self.restart()
+
+        @scheduler.scheduled_job('interval', id='check_and_restart', minutes=10)
+        def check_and_restart():
+            self.restart_crashed()
 
     @classmethod
     def quiet(cls):
@@ -55,6 +59,10 @@ class StreamPool(metaclass=Singleton):
     def restart(self):
         for _, stream in self.__data.items():
             stream.restart()
+
+    def restart_crashed(self):
+        for _, stream in self.__data.items():
+            stream.start_test()
 
     def restart_if_down(self):
         for _, stream in self.__data.items():
