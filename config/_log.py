@@ -9,8 +9,7 @@ class SocketIOHandler(logging.StreamHandler):
         self.socketio = socketio
 
     def emit(self, record: logging.LogRecord) -> None:
-        msg = self.format(record)
-        self.socketio.emit('log', {'data': msg})
+        self.socketio.emit('log', {'data': self.format(record)})
 
 
 class AntiColorFormatter(logging.Formatter):
