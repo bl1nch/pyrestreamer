@@ -245,6 +245,7 @@ class Stream:
     def restart(self):
         if self.__player.is_playing():
             self.__player.stop()
+        self.__player.release()
         if not self.__player.is_playing():
             self.__player.set_media(self.__vlc_instance.media_new(self.__resource, self.__sout))
             self.__player.play()
