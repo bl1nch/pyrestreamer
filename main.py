@@ -1,13 +1,13 @@
-from core import app, socketio, db, streams, host, port
-from extensions.streaming import Stream
-from app.api import api_bp
-from app.vue import vue_bp
+from gevent.monkey import patch_all
+patch_all()
+if True:
+    from core import app, socketio, db, streams, host, port
+    from extensions.streaming import Stream
+    from app.api import api_bp
+    from app.vue import vue_bp
 
 
 if __name__ == '__main__':
-    from gevent import monkey
-    monkey.patch_all()
-    
     app.register_blueprint(api_bp)
     app.register_blueprint(vue_bp)
     data = db.getAll()
