@@ -1,6 +1,5 @@
 import psutil
 import GPUtil
-from threading import Thread
 
 
 def start_monitoring(socketio):
