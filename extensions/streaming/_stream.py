@@ -2,11 +2,11 @@ from extensions.streaming._stream_pool import StreamPool
 from vlc import Instance, VideoLogoOption, EventType, callbackmethod
 from socket import gethostbyname
 from threading import Thread
+from gevent import sleep
 import urllib.parse
 import logging
 import platform
 import subprocess
-import time
 
 
 class Stream:
@@ -71,7 +71,8 @@ class Stream:
             '--quiet' if StreamPool.quiet() else None,
             '--file-caching=' + str(self.__file_caching),
             '--audio-track=' + str(self.__audio_track),
-            '--miface=' + self.__m_iface if self.__m_iface != '' else None
+            '--miface=' + self.__m_iface if self.__m_iface != '' else None,
+            '--no-video' if self.__stream_type == 'test' else None
         ]
         self.__vlc_instance = Instance(' '.join(filter(None, vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
@@ -122,6 +123,22 @@ class Stream:
 
         else:
             self.__sout = ''
+
+    def __thread_tester(self):
+        if self.__active:
+            tester = Stream("_", self.get_address(), 'none', 'test', 0, 'test', loop=False)
+            tester.start()
+            sleep(5)
+            online = tester.online()
+            tester.stop()
+            if not online and self.__active:
+                self.restart()
+            tester.release()
+
+    def start_test(self):
+        if self.__loop:
+            self.__restart_thread = Thread(target=self.__thread_tester, daemon=True)
+            self.__restart_thread.start()
 
     @property
     def active(self):
@@ -211,10 +228,10 @@ class Stream:
             if self.__active and not self.__player.is_playing():
                 self.restart()
                 if not first_timeout_done:
-                    time.sleep(10)
+                    sleep(10)
                     first_timeout_done = True
                 else:
-                    time.sleep(600)
+                    sleep(600)
             else:
                 break
 
