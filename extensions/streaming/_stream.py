@@ -124,20 +124,21 @@ class Stream:
         else:
             self.__sout = ''
 
-    def __thread_tester(self):
-        if self.__active:
-            tester = Stream("_", self.get_address(), 'none', 'test', 0, 'test', loop=False)
-            tester.start()
-            sleep(5)
-            online = tester.online()
-            tester.stop()
-            if not online and self.__active:
-                self.restart()
-            tester.release()
+    def __thread_tester(self, lock):
+        with lock:
+            if self.__active:
+                tester = Stream("_", self.get_address(), 'none', 'test', 0, 'test', loop=False)
+                tester.start()
+                sleep(5)
+                online = tester.online()
+                tester.stop()
+                if not online and self.__active:
+                    self.restart()
+                tester.release()
 
-    def start_test(self):
+    def start_test(self, lock):
         if self.__loop:
-            self.__restart_thread = Thread(target=self.__thread_tester, daemon=True)
+            self.__restart_thread = Thread(target=self.__thread_tester, args=(lock, ), daemon=True)
             self.__restart_thread.start()
 
     @property
