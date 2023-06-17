@@ -74,7 +74,7 @@ class Stream:
             '--miface=' + self.__m_iface if self.__m_iface != '' else None,
             '--no-video' if self.__stream_type == 'test' else None
         ]
-        self.__vlc_instance = Instance(' '.join(filter(None, vlc_instance_parameters)))
+        self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
         self.__events = self.__player.event_manager()
         self.__events.event_attach(EventType.MediaPlayerEndReached, self.__restart_on_end)
