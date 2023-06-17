@@ -16,7 +16,7 @@ source .venv/bin/activate
 ```
 4. Export flask app secret key
 ```
-export SECRET_KEY="!secret"
+export SECRET_KEY="SECRET_KEY"
 ```
 5. Run app
 ```
