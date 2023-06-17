@@ -48,6 +48,7 @@ class StreamPool(metaclass=Singleton):
         def check_and_restart():
             if not self.__sched_using:
                 self.restart_crashed()
+                gc.collect()
 
     @classmethod
     def quiet(cls):
