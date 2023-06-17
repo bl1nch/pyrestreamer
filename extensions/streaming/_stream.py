@@ -245,6 +245,7 @@ class Stream:
     def recreate(self):
         if self.__player.is_playing():
             self.__player.stop()
+        self.__vlc_instance.vlm_release()
         self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
         self.__events = self.__player.event_manager()
