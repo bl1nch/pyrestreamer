@@ -7,6 +7,7 @@ import urllib.parse
 import logging
 import platform
 import subprocess
+import gc
 
 
 class Stream:
