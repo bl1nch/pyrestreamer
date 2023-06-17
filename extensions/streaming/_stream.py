@@ -245,7 +245,7 @@ class Stream:
     def recreate(self):
         if self.__player.is_playing():
             self.__player.stop()
-        self.__vlc_instance.vlm_release()
+        self.__player.release()
         self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
         self.__events = self.__player.event_manager()
@@ -253,6 +253,7 @@ class Stream:
         if self.__logo_file != '':
             self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
             self.__player.video_set_logo_string(VideoLogoOption.logo_file, self.__logo_file)
+        gc.collect()
     
     def restart(self):
         if self.__player.is_playing():
