@@ -67,7 +67,7 @@ class Stream:
         self.__restart_thread = None
         self.__active = True
 
-        vlc_instance_parameters = [
+        self.__vlc_instance_parameters = [
             '--quiet' if StreamPool.quiet() else None,
             '--file-caching=' + str(self.__file_caching),
             '--audio-track=' + str(self.__audio_track),
@@ -242,6 +242,17 @@ class Stream:
             self.__restart_thread = Thread(target=self.__thread_restarter, daemon=True)
             self.__restart_thread.start()
 
+    def recreate(self):
+        if self.__player.is_playing():
+            self.__player.stop()
+        self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
+        self.__player = self.__vlc_instance.media_player_new()
+        self.__events = self.__player.event_manager()
+        self.__events.event_attach(EventType.MediaPlayerEndReached, self.__restart_on_end)
+        if self.__logo_file != '':
+            self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
+            self.__player.video_set_logo_string(VideoLogoOption.logo_file, self.__logo_file)
+    
     def restart(self):
         if self.__player.is_playing():
             self.__player.stop()
