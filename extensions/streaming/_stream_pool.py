@@ -1,6 +1,7 @@
 from extensions.singleton import Singleton
 from gevent.threading import Lock
 from gevent import sleep
+import gc
 
 
 class StreamPool(metaclass=Singleton):
