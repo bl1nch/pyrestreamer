@@ -17,7 +17,7 @@ class StreamPool(metaclass=Singleton):
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
-            self.restart()
+            self.recreate_and_start()
             self.__sched_using = False
 
         @scheduler.scheduled_job('cron', id='scheduled_restarter_am_h', hour=7)
@@ -25,7 +25,7 @@ class StreamPool(metaclass=Singleton):
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
-            self.restart()
+            self.recreate_and_start()
             self.__sched_using = False
 
         @scheduler.scheduled_job('cron', id='scheduled_restarter_pm_l', hour=13)
@@ -33,7 +33,7 @@ class StreamPool(metaclass=Singleton):
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
-            self.restart()
+            self.recreate_and_start()
             self.__sched_using = False
 
         @scheduler.scheduled_job('cron', id='scheduled_restarter_pm_h', hour=19)
@@ -41,7 +41,7 @@ class StreamPool(metaclass=Singleton):
             self.__sched_using = True
             while self.__sched_lock.locked():
                 sleep(5)
-            self.restart()
+            self.recreate_and_start()
             self.__sched_using = False
 
         @scheduler.scheduled_job('interval', id='check_and_restart', minutes=15)
@@ -85,6 +85,11 @@ class StreamPool(metaclass=Singleton):
         for _, stream in self.__data.items():
             stream.stop()
 
+    def recreate_and_start(self):
+        for _, stream in self.__data.items():
+            stream.recreate()
+            stream.start()
+    
     def restart(self):
         for _, stream in self.__data.items():
             stream.restart()
