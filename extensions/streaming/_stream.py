@@ -70,7 +70,7 @@ class Stream:
 
         self.__vlc_instance_parameters = [
             '--quiet' if StreamPool.quiet() else None,
-            '--file-caching=' + str(self.__file_caching),
+            '--network-caching=' + str(self.__file_caching),
             '--audio-track=' + str(self.__audio_track),
             '--miface=' + self.__m_iface if self.__m_iface != '' else None,
             '--no-video' if self.__stream_type == 'test' else None
