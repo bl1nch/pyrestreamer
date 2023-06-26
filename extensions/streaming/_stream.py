@@ -77,8 +77,6 @@ class Stream:
         ]
         self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
-        self.__events = self.__player.event_manager()
-        self.__events.event_attach(EventType.MediaPlayerEndReached, self.__restart_on_end)
 
         if self.__logo_file != '':
             self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
@@ -224,33 +222,12 @@ class Stream:
         self.__active = False
         self.__player.release()
 
-    def __thread_restarter(self):
-        first_timeout_done = False
-        while True:
-            if self.__active and not self.__player.is_playing():
-                self.restart()
-                if not first_timeout_done:
-                    sleep(10)
-                    first_timeout_done = True
-                else:
-                    sleep(600)
-            else:
-                break
-
-    @callbackmethod
-    def __restart_on_end(self, *_):
-        if self.__loop:
-            self.__restart_thread = Thread(target=self.__thread_restarter, daemon=True)
-            self.__restart_thread.start()
-
     def recreate(self):
         if self.__player.is_playing():
             self.__player.stop()
         self.__player.release()
         self.__vlc_instance = Instance(' '.join(filter(None, self.__vlc_instance_parameters)))
         self.__player = self.__vlc_instance.media_player_new()
-        self.__events = self.__player.event_manager()
-        self.__events.event_attach(EventType.MediaPlayerEndReached, self.__restart_on_end)
         if self.__logo_file != '':
             self.__player.video_set_logo_int(VideoLogoOption.logo_enable, 1)
             self.__player.video_set_logo_string(VideoLogoOption.logo_file, self.__logo_file)
